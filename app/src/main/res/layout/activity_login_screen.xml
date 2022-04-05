@@ -4,13 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginScreenActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/blankUserOrPassTextView"
+        android:layout_width="225dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="9dp"
+        android:alpha="0"
+        android:clickable="false"
+        android:text="@string/please_enter_a_username_and_password"
+        android:textAlignment="center"
+        android:textColor="#FF0000"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
+
+    <TextView
+        android:id="@+id/welcomeTextView"
         android:layout_width="250dp"
         android:layout_height="87dp"
-        android:text="Welcome!"
+        android:text="@string/welcome"
         android:textAlignment="center"
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,9 +50,11 @@
         android:layout_marginEnd="93dp"
         android:layout_marginBottom="2dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/button_signIn"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,16 +69,18 @@
         android:layout_marginEnd="93dp"
         android:layout_marginBottom="1dp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="@string/username"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:textColorHint="#757575"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/incorrectUserOrPassTextView" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/incorrectUserOrPassTextView"
         android:layout_width="225dp"
         android:layout_height="26dp"
         android:layout_marginStart="90dp"
@@ -65,7 +89,7 @@
         android:layout_marginBottom="9dp"
         android:alpha="0"
         android:clickable="false"
-        android:text="Username or password is incorrect"
+        android:text="@string/username_or_password_is_incorrect"
         android:textAlignment="center"
         android:textColor="#FF0000"
         android:textSize="12sp"
@@ -73,22 +97,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
 
     <Button
-        android:id="@+id/button_signIn"
+        android:id="@+id/buttonSignIn"
         android:layout_width="220dp"
         android:layout_height="48dp"
-        android:layout_marginStart="96dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginBottom="279dp"
+        android:layout_marginEnd="86dp"
+        android:layout_marginBottom="10dp"
         android:onClick="login"
-        android:text="Sign In"
+        android:text="@string/sign_in"
+        app:layout_constraintBottom_toTopOf="@+id/newUserTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+
+    <TextView
+        android:id="@+id/newUserTextView"
+        android:layout_width="225dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="219dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="newUser"
+        android:text="@string/new_user_sign_up_here"
+        android:textAlignment="center"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSignIn"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
