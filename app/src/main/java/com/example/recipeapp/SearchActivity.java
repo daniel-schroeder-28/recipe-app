@@ -43,6 +43,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void recipeSearch(View v) {
         findViewById(R.id.buttonSearch).setAlpha(0);
+        findViewById(R.id.buttonSearch).setClickable(false);
         findViewById(R.id.scrollViewRecipe).setAlpha(1);
         findViewById(R.id.buttonNewRecipeSearch).setAlpha(1);
     }
