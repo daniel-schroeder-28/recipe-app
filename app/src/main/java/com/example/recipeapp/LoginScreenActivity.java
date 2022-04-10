@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,25 +34,20 @@ public class LoginScreenActivity extends AppCompatActivity {
         String pass = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
 
        if (user.length() > 0 && pass.length() > 0) {
-           db.collection("users")
-               .document(user)
-               .get()
-               .addOnSuccessListener(new OnSuccessListener() {
-                   @Override
-                   public void onSuccess(Object doc) {
-                       try {
-                           if (pass.equals(((DocumentSnapshot) doc).getData().get("password"))) {
-                               Intent intent = new Intent(LoginScreenActivity.this, WelcomeScreenActivity.class);
-                               startActivity(intent);
-                           } else {
-                               findViewById(R.id.incorrectUserOrPassTextView).setAlpha(1);
-                           }
-                       } catch (NullPointerException e) {
-                           e.printStackTrace();
-                       }
+           DocumentReference docRef = db.collection("users").document(user);
+           docRef.get().addOnCompleteListener(task -> {
+               if (task.isSuccessful()) {
+                   DocumentSnapshot document = task.getResult();
+                   if (document.exists() && pass.equals(document.getData().get("password"))) {
+                       Intent intent = new Intent(LoginScreenActivity.this, WelcomeScreenActivity.class);
+                       startActivity(intent);
+                   } else {
+                       findViewById(R.id.incorrectUserOrPassTextView).setAlpha(1);
                    }
-               })
-               .addOnFailureListener(e -> findViewById(R.id.incorrectUserOrPassTextView).setAlpha(1));
+               } else {
+                   findViewById(R.id.incorrectUserOrPassTextView).setAlpha(1);
+               }
+           });
        } else {
            findViewById(R.id.blankUserOrPassTextView).setAlpha(1);
        }

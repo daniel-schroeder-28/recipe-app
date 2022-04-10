@@ -8,30 +8,30 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationBarView;
 
-public class WelcomeScreenActivity extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome_screen);
+        setContentView(R.layout.activity_filter);
 
         NavigationBarView navBar = findViewById(R.id.bottom_navigation);
-        navBar.setSelectedItemId(R.id.welcome);
+        navBar.setSelectedItemId(R.id.filter);
         navBar.setOnItemSelectedListener(this::navigate);
     }
 
     private boolean navigate(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case (R.id.welcome):
-                return false;
+                Intent intentWelcome = new Intent(this, WelcomeScreenActivity.class);
+                startActivity(intentWelcome);
+                break;
             case (R.id.search):
                 Intent intentSearch = new Intent(this, SearchActivity.class);
                 startActivity(intentSearch);
                 break;
             case (R.id.filter):
-                Intent intentFilter = new Intent(this, FilterActivity.class);
-                startActivity(intentFilter);
-                break;
+                return false;
         }
         return true;
     }

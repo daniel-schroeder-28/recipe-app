@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipeApp">
         <activity
+            android:name=".FilterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".NewUserActivity"
             android:exported="false"
             android:parentActivityName=".LoginScreenActivity" />

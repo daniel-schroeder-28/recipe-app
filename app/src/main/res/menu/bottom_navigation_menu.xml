@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/welcome"
+        android:enabled="true"
+        android:icon="@drawable/welcome"
+        android:title="@string/welcome"/>
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@drawable/search"
+        android:title="@string/search" />
+    <item
+        android:id="@+id/filter"
+        android:enabled="true"
+        android:icon="@drawable/filter"
+        android:title="@string/filter" />
+</menu>
+
+<!--<a href="https://www.flaticon.com/free-icons/funnel" title="funnel icons">Funnel icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Pixel perfect - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/smile" title="smile icons">Smile icons created by Freepik - Flaticon</a>-->
