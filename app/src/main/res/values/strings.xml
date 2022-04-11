@@ -18,5 +18,9 @@
     <string name="filter">Filter</string>
     <string name="search">Search</string>
     <string name="give_me_a_recipe">Give me a recipe!</string>
-    <string name="find_a_new_recipe">Find a new recipe</string>
+    <string name="find_a_new_recipe">New Recipe</string>
+    <string name="favorite_recipes">Favorite Recipes:</string>
+    <string name="view_recipe">View Recipe</string>
+    <string name="unfavorite">Unfavorite</string>
+    <string name="favorite">Favorite</string>
 </resources>

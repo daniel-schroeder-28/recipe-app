@@ -11,11 +11,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NewUserActivity extends AppCompatActivity {
 
+    public static String USERNAME = "";
+    public static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -58,12 +62,15 @@ public class NewUserActivity extends AppCompatActivity {
                     if (document.exists()) {
                         findViewById(R.id.textViewUserAlreadyExists).setAlpha(1);
                     } else {
-                        Map<String, String> passwordMap = new HashMap<>();
-                        passwordMap.put("password", pass);
-                        docRef.set(passwordMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        Map<String, String> fieldsMap = new HashMap<>();
+                        fieldsMap.put("password", pass);
+                        fieldsMap.put("favorite_recipes", "");
+                        docRef.set(fieldsMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void documentReference) {
                                 Intent intent = new Intent(NewUserActivity.this, WelcomeScreenActivity.class);
+                                intent.putExtra("username", user);
+                                intent.putExtra("favorite_recipes", FAVORITE_RECIPES);
                                 startActivity(intent);
                             }
                         })
