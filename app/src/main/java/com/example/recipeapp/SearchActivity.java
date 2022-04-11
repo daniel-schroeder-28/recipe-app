@@ -55,9 +55,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * Function to navigate between pages passing relevent data between them
-     * @param menuItem
-     * @return
+     * Function to navigate between pages passing relevant data between them
+     * @param menuItem - menuItem clicked
+     * @return true or false
      */
     public boolean navigate(MenuItem menuItem) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
@@ -84,7 +84,7 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * Function that searches all recipes - used by main button on search page
-     * @param v
+     * @param v - View
      */
     public void recipeSearch(View v) {
         switchView();
@@ -103,7 +103,7 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * Searches all recipes excluding the one we are currently looking at
-     * @param v
+     * @param v - View
      */
     public void newRecipeSearch(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
@@ -140,7 +140,7 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * Adds current recipe to favorites and changes buttons from favorite to unfavorite
-     * @param v
+     * @param v - View
      */
     public void addFavorite(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
@@ -156,7 +156,7 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * Removes current recipe from favorites and changes buttons from unfavorite to favorite
-     * @param v
+     * @param v - View
      */
     public void removeFavorite(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
@@ -194,7 +194,7 @@ public class SearchActivity extends AppCompatActivity {
     /**
      * Split out from other functions to keep code in one place
      * finds the recipe in the db and then fills in the screen with the recipe
-     * @param recipeName
+     * @param recipeName - name of recipe we are searching for
      */
     private void searchAndFillViews(String recipeName) {
         DocumentReference docRef = db.collection("recipes").document(recipeName);
@@ -214,7 +214,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * Swithes between favorite or unfavorite based on in the recipe is favorited
+     * Switches between favorite or unfavorite based on in the recipe is favorited
      * @param recipeName - the recipe to check if its favorited
      */
     private void favoriteVsUnfavorite(String recipeName) {

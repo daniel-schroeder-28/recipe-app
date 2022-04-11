@@ -32,9 +32,9 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     /**
-     * Function to navigate between pages passing relevent data between them
-     * @param menuItem
-     * @return
+     * Function to navigate between pages passing relevant data between them
+     * @param menuItem - item clicked
+     * @return - true or false
      */
     private boolean navigate(MenuItem menuItem) {
         switch (menuItem.getItemId()) {

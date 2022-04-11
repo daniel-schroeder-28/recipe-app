@@ -1,19 +1,13 @@
 package com.example.recipeapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.material.navigation.NavigationBarView;
-
 import java.util.ArrayList;
 
 public class WelcomeScreenActivity extends AppCompatActivity implements FavoritesAdapter.ListItemClickListener {
@@ -45,7 +39,7 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
         }
 
         recyclerView = findViewById(R.id.recyclerViewFavoriteRecipes);
-        if (FAVORITE_RECIPES.size() > 0 && FAVORITE_RECIPES.get(0) != "") {
+        if (FAVORITE_RECIPES.size() > 0 && !FAVORITE_RECIPES.get(0).equals("")) {
             FavoritesAdapter adapter = new FavoritesAdapter(FAVORITE_RECIPES, this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,9 +51,9 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
     }
 
     /**
-     * Function to navigate between pages passing relevent data between them
-     * @param menuItem
-     * @return
+     * Function to navigate between pages passing relevant data between them
+     * @param menuItem - menuItem clicked on
+     * @return - true or false
      */
     private boolean navigate(MenuItem menuItem) {
         switch (menuItem.getItemId()) {

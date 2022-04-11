@@ -33,7 +33,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     /**
      * function to log in to app
-     * @param v
+     * @param v - View
      */
     public void login(View v) {
         findViewById(R.id.blankUserOrPassTextView).setAlpha(0);
@@ -66,7 +66,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
     /**
      * function to navigate to account creation page
-     * @param v
+     * @param v - View
      */
     public void newUser(View v) {
         Intent intent = new Intent(this, NewUserActivity.class);

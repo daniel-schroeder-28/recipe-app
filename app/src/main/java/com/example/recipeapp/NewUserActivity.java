@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,7 +35,7 @@ public class NewUserActivity extends AppCompatActivity {
 
     /**
      * function to go back to login page
-     * @param v
+     * @param v - View
      */
     public void alreadyHaveAccount(View v) {
         Intent intent = new Intent(this, LoginScreenActivity.class);
@@ -45,7 +44,7 @@ public class NewUserActivity extends AppCompatActivity {
 
     /**
      * function to create account
-     * @param v
+     * @param v - View
      */
     public void createAccount(View v) {
         findViewById(R.id.textViewPasswordsDoNotMatch).setAlpha(0);
@@ -73,14 +72,11 @@ public class NewUserActivity extends AppCompatActivity {
                         Map<String, String> fieldsMap = new HashMap<>();
                         fieldsMap.put("password", pass);
                         fieldsMap.put("favorite_recipes", "");
-                        docRef.set(fieldsMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void documentReference) {
-                                Intent intent = new Intent(NewUserActivity.this, WelcomeScreenActivity.class);
-                                intent.putExtra("username", user);
-                                intent.putExtra("favorite_recipes", FAVORITE_RECIPES);
-                                startActivity(intent);
-                            }
+                        docRef.set(fieldsMap).addOnSuccessListener(documentReference -> {
+                            Intent intent = new Intent(NewUserActivity.this, WelcomeScreenActivity.class);
+                            intent.putExtra("username", user);
+                            intent.putExtra("favorite_recipes", FAVORITE_RECIPES);
+                            startActivity(intent);
                         })
                         .addOnFailureListener(ex -> findViewById(R.id.textViewRandomError).setAlpha(1));
                     }

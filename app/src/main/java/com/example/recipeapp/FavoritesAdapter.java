@@ -19,8 +19,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         void onListItemClick(int position);
     }
 
-    private ArrayList<String> recipes;
-    final private ListItemClickListener itemOnClickListener;
+    private final ArrayList<String> recipes;
+    private final ListItemClickListener itemOnClickListener;
 
     // Pass in the contact array into the constructor
     public FavoritesAdapter(ArrayList<String> recipeList, ListItemClickListener onClickListener) {
@@ -38,8 +38,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         View contactView = inflater.inflate(R.layout.favorites, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView, itemOnClickListener);
-        return viewHolder;
+        return new ViewHolder(contactView, itemOnClickListener);
     }
 
     @Override
@@ -59,11 +58,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         return recipes.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView textViewRecipeName;
         public Button buttonView;
-        private WeakReference<ListItemClickListener> clickListenerRef;
+        private final WeakReference<ListItemClickListener> clickListenerRef;
 
         public ViewHolder(View v, ListItemClickListener clickListener) {
             super(v);
