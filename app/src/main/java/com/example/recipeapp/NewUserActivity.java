@@ -34,11 +34,19 @@ public class NewUserActivity extends AppCompatActivity {
         textView.setOnClickListener((this::alreadyHaveAccount));
     }
 
+    /**
+     * function to go back to login page
+     * @param v
+     */
     public void alreadyHaveAccount(View v) {
         Intent intent = new Intent(this, LoginScreenActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * function to create account
+     * @param v
+     */
     public void createAccount(View v) {
         findViewById(R.id.textViewPasswordsDoNotMatch).setAlpha(0);
         findViewById(R.id.textViewMissingField).setAlpha(0);

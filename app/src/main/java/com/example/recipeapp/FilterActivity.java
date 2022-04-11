@@ -31,6 +31,11 @@ public class FilterActivity extends AppCompatActivity {
         navBar.setOnItemSelectedListener(this::navigate);
     }
 
+    /**
+     * Function to navigate between pages passing relevent data between them
+     * @param menuItem
+     * @return
+     */
     private boolean navigate(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case (R.id.welcome):

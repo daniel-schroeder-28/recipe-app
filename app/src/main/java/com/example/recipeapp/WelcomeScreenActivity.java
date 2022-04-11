@@ -56,6 +56,11 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
         navBar.setOnItemSelectedListener(this::navigate);
     }
 
+    /**
+     * Function to navigate between pages passing relevent data between them
+     * @param menuItem
+     * @return
+     */
     private boolean navigate(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case (R.id.welcome):
@@ -78,6 +83,10 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
         return true;
     }
 
+    /**
+     * Function to view specific recipe from favorites list
+     * @param position - which position in list is clicked
+     */
     private void viewRecipe(int position) {
         TextView textView = recyclerView.getLayoutManager().findViewByPosition(position).findViewById(R.id.textViewRecipeName);
 

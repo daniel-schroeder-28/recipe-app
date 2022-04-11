@@ -1,10 +1,7 @@
 package com.example.recipeapp;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +14,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -59,6 +54,11 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Function to navigate between pages passing relevent data between them
+     * @param menuItem
+     * @return
+     */
     public boolean navigate(MenuItem menuItem) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
         switch (menuItem.getItemId()) {
@@ -82,11 +82,18 @@ public class SearchActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Function that searches all recipes - used by main button on search page
+     * @param v
+     */
     public void recipeSearch(View v) {
         switchView();
         randomSearch("");
     }
 
+    /**
+     * Switches between initial search screen and search screen with recipe on it
+     */
     private void switchView() {
         findViewById(R.id.buttonSearch).setAlpha(0);
         findViewById(R.id.buttonSearch).setClickable(false);
@@ -94,11 +101,20 @@ public class SearchActivity extends AppCompatActivity {
         findViewById(R.id.buttonNewRecipeSearch).setAlpha(1);
     }
 
+    /**
+     * Searches all recipes excluding the one we are currently looking at
+     * @param v
+     */
     public void newRecipeSearch(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
         randomSearch(title.getText().toString());
     }
 
+    /**
+     * Split out from other search functions to keep code in one place
+     * Does the search through the database to get all documents excluding currentRecipe
+     * @param currentRecipe - the recipe we are currently looking at
+     */
     private void randomSearch(String currentRecipe) {
         ArrayList<String> allValidRecipes = new ArrayList<>();
 
@@ -112,91 +128,75 @@ public class SearchActivity extends AppCompatActivity {
                             }
                         }
 
-                        String returnRecipe = allValidRecipes.get((int) Math.floor(Math.random() * allValidRecipes.size()));
+                        String recipeName = allValidRecipes.get((int) Math.floor(Math.random() * allValidRecipes.size()));
                         TextView title = findViewById(R.id.textViewRecipeTitle);
-                        title.setText(returnRecipe);
+                        title.setText(recipeName);
 
-                        if (FAVORITE_RECIPES.contains(returnRecipe)) {
-                            findViewById(R.id.buttonRemoveFromFavorites).setAlpha(1);
-                            findViewById(R.id.buttonAddToFavorites).setClickable(false);
-                            findViewById(R.id.buttonAddToFavorites).setAlpha(0);
-                            findViewById(R.id.buttonRemoveFromFavorites).setClickable(true);
-                        } else {
-                            findViewById(R.id.buttonAddToFavorites).setAlpha(1);
-                            findViewById(R.id.buttonRemoveFromFavorites).setClickable(false);
-                            findViewById(R.id.buttonRemoveFromFavorites).setAlpha(0);
-                            findViewById(R.id.buttonAddToFavorites).setClickable(true);
-                        }
-
-                        DocumentReference docRef = db.collection("recipes").document(returnRecipe);
-                        docRef.get().addOnCompleteListener(docTask -> {
-                            if (docTask.isSuccessful()) {
-                                DocumentSnapshot document = docTask.getResult();
-                                if (document.exists()) {
-                                    TextView recipe = findViewById(R.id.textViewRecipe);
-                                    String recipeText = "Prep time: " + document.getData().get("prep_time").toString() + "\n\n";
-                                    recipeText += "Cook time: " + document.getData().get("cook_time").toString() + "\n\n\n";
-                                    recipeText += "Ingredients:\n" + document.getData().get("measurements").toString().replace(";", "\n\n") + "\n";
-                                    recipeText += document.getData().get("steps").toString().replace(";", "\n\n");
-                                    recipe.setText(recipeText);
-                                }
-                            }
-                        });
+                        favoriteVsUnfavorite(recipeName);
+                        searchAndFillViews(recipeName);
                     }
                 });
     }
 
+    /**
+     * Adds current recipe to favorites and changes buttons from favorite to unfavorite
+     * @param v
+     */
     public void addFavorite(View v) {
-        findViewById(R.id.buttonAddToFavorites).setAlpha(0);
-        findViewById(R.id.buttonRemoveFromFavorites).setAlpha(1);
-        findViewById(R.id.buttonAddToFavorites).setClickable(false);
-        findViewById(R.id.buttonRemoveFromFavorites).setClickable(true);
-
         TextView title = findViewById(R.id.textViewRecipeTitle);
         FAVORITE_RECIPES.add(title.getText().toString());
 
+        favoriteVsUnfavorite(title.getText().toString());
+
         Map<String, String> favoritesMap = new HashMap<>();
         favoritesMap.put("favorite_recipes", String.join(",", FAVORITE_RECIPES));
 
         db.collection("users").document(USERNAME).set(favoritesMap, SetOptions.merge());
     }
 
+    /**
+     * Removes current recipe from favorites and changes buttons from unfavorite to favorite
+     * @param v
+     */
     public void removeFavorite(View v) {
-        findViewById(R.id.buttonAddToFavorites).setAlpha(1);
-        findViewById(R.id.buttonRemoveFromFavorites).setAlpha(0);
-        findViewById(R.id.buttonAddToFavorites).setClickable(true);
-        findViewById(R.id.buttonRemoveFromFavorites).setClickable(false);
-
         TextView title = findViewById(R.id.textViewRecipeTitle);
         FAVORITE_RECIPES.remove(title.getText().toString());
 
+        favoriteVsUnfavorite(title.getText().toString());
+
         Map<String, String> favoritesMap = new HashMap<>();
         favoritesMap.put("favorite_recipes", String.join(",", FAVORITE_RECIPES));
 
         db.collection("users").document(USERNAME).set(favoritesMap, SetOptions.merge());
     }
 
+    /**
+     * Immediately searches for a recipe upon landing on search page instead of needing to click search
+     * @param recipeName - the recipe to search for
+     */
     private void immediateSearch(String recipeName) {
         switchView();
-        specificSearch(recipeName);
+        findSpecificRecipe(recipeName);
     }
 
-    private void specificSearch(String recipeName) {
-        if (FAVORITE_RECIPES.contains(recipeName)) {
-            findViewById(R.id.buttonRemoveFromFavorites).setAlpha(1);
-            findViewById(R.id.buttonAddToFavorites).setClickable(false);
-            findViewById(R.id.buttonAddToFavorites).setAlpha(0);
-            findViewById(R.id.buttonRemoveFromFavorites).setClickable(true);
-        } else {
-            findViewById(R.id.buttonAddToFavorites).setAlpha(1);
-            findViewById(R.id.buttonRemoveFromFavorites).setClickable(false);
-            findViewById(R.id.buttonRemoveFromFavorites).setAlpha(0);
-            findViewById(R.id.buttonAddToFavorites).setClickable(true);
-        }
-
+    /**
+     * Searches for a specific recipe rather than randomly searching
+     * @param recipeName - the recipe to search for
+     */
+    private void findSpecificRecipe(String recipeName) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
         title.setText(recipeName);
 
+        favoriteVsUnfavorite(recipeName);
+        searchAndFillViews(recipeName);
+    }
+
+    /**
+     * Split out from other functions to keep code in one place
+     * finds the recipe in the db and then fills in the screen with the recipe
+     * @param recipeName
+     */
+    private void searchAndFillViews(String recipeName) {
         DocumentReference docRef = db.collection("recipes").document(recipeName);
         docRef.get().addOnCompleteListener(docTask -> {
             if (docTask.isSuccessful()) {
@@ -211,5 +211,23 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Swithes between favorite or unfavorite based on in the recipe is favorited
+     * @param recipeName - the recipe to check if its favorited
+     */
+    private void favoriteVsUnfavorite(String recipeName) {
+        if (FAVORITE_RECIPES.contains(recipeName)) {
+            findViewById(R.id.buttonRemoveFromFavorites).setAlpha(1);
+            findViewById(R.id.buttonAddToFavorites).setClickable(false);
+            findViewById(R.id.buttonAddToFavorites).setAlpha(0);
+            findViewById(R.id.buttonRemoveFromFavorites).setClickable(true);
+        } else {
+            findViewById(R.id.buttonAddToFavorites).setAlpha(1);
+            findViewById(R.id.buttonRemoveFromFavorites).setClickable(false);
+            findViewById(R.id.buttonRemoveFromFavorites).setAlpha(0);
+            findViewById(R.id.buttonAddToFavorites).setClickable(true);
+        }
     }
 }

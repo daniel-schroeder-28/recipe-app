@@ -31,6 +31,10 @@ public class LoginScreenActivity extends AppCompatActivity {
         textView.setOnClickListener((this::newUser));
     }
 
+    /**
+     * function to log in to app
+     * @param v
+     */
     public void login(View v) {
         findViewById(R.id.blankUserOrPassTextView).setAlpha(0);
         findViewById(R.id.incorrectUserOrPassTextView).setAlpha(0);
@@ -60,6 +64,10 @@ public class LoginScreenActivity extends AppCompatActivity {
        }
     }
 
+    /**
+     * function to navigate to account creation page
+     * @param v
+     */
     public void newUser(View v) {
         Intent intent = new Intent(this, NewUserActivity.class);
         startActivity(intent);
