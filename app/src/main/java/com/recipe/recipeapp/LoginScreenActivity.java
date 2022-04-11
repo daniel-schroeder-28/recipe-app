@@ -1,4 +1,4 @@
-package com.example.recipeapp;
+package com.recipe.recipeapp;
 
 import android.content.Intent;
 import android.os.Bundle;

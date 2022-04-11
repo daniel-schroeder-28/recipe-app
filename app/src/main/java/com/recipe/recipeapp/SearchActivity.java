@@ -1,4 +1,4 @@
-package com.example.recipeapp;
+package com.recipe.recipeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
