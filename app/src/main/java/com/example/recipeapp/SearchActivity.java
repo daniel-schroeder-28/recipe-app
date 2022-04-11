@@ -59,7 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    private boolean navigate(MenuItem menuItem) {
+    public boolean navigate(MenuItem menuItem) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
         switch (menuItem.getItemId()) {
             case (R.id.welcome):
@@ -82,7 +82,7 @@ public class SearchActivity extends AppCompatActivity {
         return true;
     }
 
-    private void recipeSearch(View v) {
+    public void recipeSearch(View v) {
         switchView();
         randomSearch("");
     }
@@ -94,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
         findViewById(R.id.buttonNewRecipeSearch).setAlpha(1);
     }
 
-    private void newRecipeSearch(View v) {
+    public void newRecipeSearch(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
         randomSearch(title.getText().toString());
     }
@@ -146,7 +146,7 @@ public class SearchActivity extends AppCompatActivity {
                 });
     }
 
-    private void addFavorite(View v) {
+    public void addFavorite(View v) {
         findViewById(R.id.buttonAddToFavorites).setAlpha(0);
         findViewById(R.id.buttonRemoveFromFavorites).setAlpha(1);
         findViewById(R.id.buttonAddToFavorites).setClickable(false);
@@ -161,7 +161,7 @@ public class SearchActivity extends AppCompatActivity {
         db.collection("users").document(USERNAME).set(favoritesMap, SetOptions.merge());
     }
 
-    private void removeFavorite(View v) {
+    public void removeFavorite(View v) {
         findViewById(R.id.buttonAddToFavorites).setAlpha(1);
         findViewById(R.id.buttonRemoveFromFavorites).setAlpha(0);
         findViewById(R.id.buttonAddToFavorites).setClickable(true);

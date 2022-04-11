@@ -31,7 +31,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         textView.setOnClickListener((this::newUser));
     }
 
-    private void login(View v) {
+    public void login(View v) {
         findViewById(R.id.blankUserOrPassTextView).setAlpha(0);
         findViewById(R.id.incorrectUserOrPassTextView).setAlpha(0);
         String user = ((EditText) findViewById(R.id.editTextTextPersonName)).getText().toString();
@@ -60,7 +60,7 @@ public class LoginScreenActivity extends AppCompatActivity {
        }
     }
 
-    private void newUser(View v) {
+    public void newUser(View v) {
         Intent intent = new Intent(this, NewUserActivity.class);
         startActivity(intent);
     }
