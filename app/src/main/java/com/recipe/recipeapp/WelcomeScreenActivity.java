@@ -3,44 +3,40 @@ package com.recipe.recipeapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.google.android.material.navigation.NavigationBarView;
-import java.util.ArrayList;
 
 public class WelcomeScreenActivity extends AppCompatActivity implements FavoritesAdapter.ListItemClickListener {
 
-    public static String USERNAME = "";
-    public static String LAST_SEARCH = "";
-    public static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
+
     public static RecyclerView recyclerView;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
         Intent intent = getIntent();
-        USERNAME = intent.getStringExtra("username");
-        FAVORITE_RECIPES = intent.getStringArrayListExtra("favorite_recipes");
-        LAST_SEARCH = intent.getStringExtra("last_search");
-
-        if (USERNAME == null) {
-            USERNAME = intent.getStringExtra(NewUserActivity.USERNAME);
-        }
+        RecipeAppGlobals.setUsername(intent.getStringExtra("username"));
+        RecipeAppGlobals.setFavoriteRecipes(intent.getStringArrayListExtra("favorite_recipes"));
+        RecipeAppGlobals.setLastSearch(intent.getStringExtra("last_search"));
 
         TextView textView = findViewById(R.id.textViewWelcomeUser);
-        if (USERNAME != null) {
-            textView.setText("Welcome " + USERNAME + "!");
+        if (RecipeAppGlobals.getUsername() != null) {
+            textView.setText("Welcome " + RecipeAppGlobals.getUsername() + "!");
         } else {
             textView.setText("Welcome!");
         }
 
         recyclerView = findViewById(R.id.recyclerViewFavoriteRecipes);
-        if (FAVORITE_RECIPES.size() > 0 && !FAVORITE_RECIPES.get(0).equals("")) {
-            FavoritesAdapter adapter = new FavoritesAdapter(FAVORITE_RECIPES, this);
+        if (RecipeAppGlobals.getFavoriteRecipes().size() > 0 && !RecipeAppGlobals.getFavoriteRecipes().get(0).equals("")) {
+            FavoritesAdapter adapter = new FavoritesAdapter(RecipeAppGlobals.getFavoriteRecipes(), this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
@@ -61,16 +57,16 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
                 return false;
             case (R.id.search):
                 Intent intentSearch = new Intent(this, SearchActivity.class);
-                intentSearch.putExtra("username", USERNAME);
-                intentSearch.putExtra("favorite_recipes", FAVORITE_RECIPES);
-                intentSearch.putExtra("immediate_search", LAST_SEARCH);
+                intentSearch.putExtra("username", RecipeAppGlobals.getUsername());
+                intentSearch.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
+                intentSearch.putExtra("last_search", RecipeAppGlobals.getLastSearch());
                 startActivity(intentSearch);
                 break;
             case (R.id.filter):
                 Intent intentFilter = new Intent(this, FilterActivity.class);
-                intentFilter.putExtra("username", USERNAME);
-                intentFilter.putExtra("favorite_recipes", FAVORITE_RECIPES);
-                intentFilter.putExtra("last_search", LAST_SEARCH);
+                intentFilter.putExtra("username", RecipeAppGlobals.getUsername());
+                intentFilter.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
+                intentFilter.putExtra("last_search", RecipeAppGlobals.getLastSearch());
                 startActivity(intentFilter);
                 break;
         }
@@ -85,9 +81,9 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
         TextView textView = recyclerView.getLayoutManager().findViewByPosition(position).findViewById(R.id.textViewRecipeName);
 
         Intent intentSearch = new Intent(this, SearchActivity.class);
-        intentSearch.putExtra("username", USERNAME);
-        intentSearch.putExtra("favorite_recipes", FAVORITE_RECIPES);
-        intentSearch.putExtra("immediate_search", textView.getText());
+        intentSearch.putExtra("username", RecipeAppGlobals.getUsername());
+        intentSearch.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
+        intentSearch.putExtra("last_search", textView.getText());
         startActivity(intentSearch);
     }
 

@@ -21,8 +21,6 @@ import java.util.Map;
 public class SearchActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static String USERNAME = "";
-    public static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +28,9 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         Intent intent = getIntent();
-        USERNAME = intent.getStringExtra("username");
-        FAVORITE_RECIPES = intent.getStringArrayListExtra("favorite_recipes");
+        RecipeAppGlobals.setUsername(intent.getStringExtra("username"));
+        RecipeAppGlobals.setFavoriteRecipes(intent.getStringArrayListExtra("favorite_recipes"));
+        RecipeAppGlobals.setLastSearch(intent.getStringExtra("last_search"));
 
         NavigationBarView navBar = findViewById(R.id.bottom_navigation);
         navBar.setSelectedItemId(R.id.search);
@@ -49,8 +48,8 @@ public class SearchActivity extends AppCompatActivity {
         Button buttonUnfavorite = findViewById(R.id.buttonRemoveFromFavorites);
         buttonUnfavorite.setOnClickListener(this::removeFavorite);
 
-        if (intent.getStringExtra("immediate_search") != null) {
-            immediateSearch(intent.getStringExtra("immediate_search"));
+        if (RecipeAppGlobals.getLastSearch() != null && !RecipeAppGlobals.getLastSearch().equals("")) {
+            immediateSearch(RecipeAppGlobals.getLastSearch());
         }
     }
 
@@ -64,8 +63,8 @@ public class SearchActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case (R.id.welcome):
                 Intent intentWelcome = new Intent(this, WelcomeScreenActivity.class);
-                intentWelcome.putExtra("username", USERNAME);
-                intentWelcome.putExtra("favorite_recipes", FAVORITE_RECIPES);
+                intentWelcome.putExtra("username", RecipeAppGlobals.getUsername());
+                intentWelcome.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
                 intentWelcome.putExtra("last_search", title.getText());
                 startActivity(intentWelcome);
                 break;
@@ -73,8 +72,8 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             case (R.id.filter):
                 Intent intentFilter = new Intent(this, FilterActivity.class);
-                intentFilter.putExtra("username", USERNAME);
-                intentFilter.putExtra("favorite_recipes", FAVORITE_RECIPES);
+                intentFilter.putExtra("username", RecipeAppGlobals.getUsername());
+                intentFilter.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
                 intentFilter.putExtra("last_search", title.getText());
                 startActivity(intentFilter);
                 break;
@@ -144,14 +143,14 @@ public class SearchActivity extends AppCompatActivity {
      */
     public void addFavorite(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
-        FAVORITE_RECIPES.add(title.getText().toString());
+        RecipeAppGlobals.addToFavoriteRecipes(title.getText().toString());
 
         favoriteVsUnfavorite(title.getText().toString());
 
         Map<String, String> favoritesMap = new HashMap<>();
-        favoritesMap.put("favorite_recipes", String.join(",", FAVORITE_RECIPES));
+        favoritesMap.put("favorite_recipes", String.join(",", RecipeAppGlobals.getFavoriteRecipes()));
 
-        db.collection("users").document(USERNAME).set(favoritesMap, SetOptions.merge());
+        db.collection("users").document(RecipeAppGlobals.getUsername()).set(favoritesMap, SetOptions.merge());
     }
 
     /**
@@ -160,14 +159,14 @@ public class SearchActivity extends AppCompatActivity {
      */
     public void removeFavorite(View v) {
         TextView title = findViewById(R.id.textViewRecipeTitle);
-        FAVORITE_RECIPES.remove(title.getText().toString());
+        RecipeAppGlobals.removeFromFavoriteRecipes(title.getText().toString());
 
         favoriteVsUnfavorite(title.getText().toString());
 
         Map<String, String> favoritesMap = new HashMap<>();
-        favoritesMap.put("favorite_recipes", String.join(",", FAVORITE_RECIPES));
+        favoritesMap.put("favorite_recipes", String.join(",", RecipeAppGlobals.getFavoriteRecipes()));
 
-        db.collection("users").document(USERNAME).set(favoritesMap, SetOptions.merge());
+        db.collection("users").document(RecipeAppGlobals.getUsername()).set(favoritesMap, SetOptions.merge());
     }
 
     /**
@@ -218,7 +217,7 @@ public class SearchActivity extends AppCompatActivity {
      * @param recipeName - the recipe to check if its favorited
      */
     private void favoriteVsUnfavorite(String recipeName) {
-        if (FAVORITE_RECIPES.contains(recipeName)) {
+        if (RecipeAppGlobals.getFavoriteRecipes().contains(recipeName)) {
             findViewById(R.id.buttonRemoveFromFavorites).setAlpha(1);
             findViewById(R.id.buttonAddToFavorites).setClickable(false);
             findViewById(R.id.buttonAddToFavorites).setAlpha(0);

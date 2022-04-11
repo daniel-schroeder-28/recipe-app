@@ -17,8 +17,6 @@ import java.util.Map;
 
 public class NewUserActivity extends AppCompatActivity {
 
-    public static String USERNAME = "";
-    public static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -75,7 +73,7 @@ public class NewUserActivity extends AppCompatActivity {
                         docRef.set(fieldsMap).addOnSuccessListener(documentReference -> {
                             Intent intent = new Intent(NewUserActivity.this, WelcomeScreenActivity.class);
                             intent.putExtra("username", user);
-                            intent.putExtra("favorite_recipes", FAVORITE_RECIPES);
+                            intent.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
                             startActivity(intent);
                         })
                         .addOnFailureListener(ex -> findViewById(R.id.textViewRandomError).setAlpha(1));

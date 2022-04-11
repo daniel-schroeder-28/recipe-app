@@ -17,7 +17,6 @@ import java.util.Arrays;
 public class LoginScreenActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +46,10 @@ public class LoginScreenActivity extends AppCompatActivity {
                if (task.isSuccessful()) {
                    DocumentSnapshot document = task.getResult();
                    if (document.exists() && pass.equals(document.getData().get("password"))) {
-                       FAVORITE_RECIPES = new ArrayList<>(Arrays.asList(document.getData().get("favorite_recipes").toString().split(",")));
+                       RecipeAppGlobals.setFavoriteRecipes(new ArrayList<>(Arrays.asList(document.getData().get("favorite_recipes").toString().split(","))));
                        Intent intent = new Intent(LoginScreenActivity.this, WelcomeScreenActivity.class);
                        intent.putExtra("username", user);
-                       intent.putExtra("favorite_recipes", FAVORITE_RECIPES);
+                       intent.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
                        startActivity(intent);
                    } else {
                        findViewById(R.id.incorrectUserOrPassTextView).setAlpha(1);
