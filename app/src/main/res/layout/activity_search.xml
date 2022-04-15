@@ -10,7 +10,9 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemBackground="@color/teal_700"
+        app:itemBackground="@color/purple_500"
+        app:itemIconTint="@color/bottom_navigation_menu_colors"
+        app:itemTextColor="@color/bottom_navigation_menu_colors"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" >
 
@@ -38,7 +40,8 @@
         android:onClick="newRecipeSearch"
         android:text="@string/find_a_new_recipe"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"/>
 
     <Button
         android:id="@+id/buttonAddToFavorites"
@@ -49,7 +52,8 @@
         android:onClick="addFavorite"
         android:text="@string/favorite"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/guideline" />
 
     <Button
         android:id="@+id/buttonRemoveFromFavorites"
@@ -60,7 +64,8 @@
         android:onClick="removeFavorite"
         android:text="@string/unfavorite"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/guideline" />
 
 
     <TextView
@@ -94,5 +99,12 @@
             android:layout_marginStart="5dp" />
 
     </ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
