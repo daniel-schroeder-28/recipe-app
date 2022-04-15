@@ -33,21 +33,21 @@
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
     <EditText
-        android:id="@+id/editTextUserName"
+        android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="225dp"
-        android:layout_marginTop="50dp"
-        android:hint="@string/username"
+        android:layout_marginTop="20dp"
+        android:hint="@string/email"
         android:importantForAutofill="no"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPasswordsDoNotMatch" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRandomError" />
 
     <TextView
         android:id="@+id/signUpTextView"
@@ -90,38 +90,6 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
-        android:id="@+id/textViewPasswordsDoNotMatch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:alpha="0"
-        android:text="@string/passwords_do_not_match"
-        android:textAlignment="center"
-        android:textColor="#FF0000"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
-        tools:ignore="TextContrastCheck" />
-
-    <TextView
-        android:id="@+id/textViewUserAlreadyExists"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:alpha="0"
-        android:text="@string/username_is_already_in_use"
-        android:textAlignment="center"
-        android:textColor="#FF0000"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
-        tools:ignore="TextContrastCheck" />
-
-    <TextView
         android:id="@+id/textViewRandomError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,22 +97,6 @@
         android:layout_marginTop="20dp"
         android:alpha="0"
         android:text="@string/an_error_has_occured"
-        android:textAlignment="center"
-        android:textColor="#FF0000"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTextView"
-        tools:ignore="TextContrastCheck" />
-
-    <TextView
-        android:id="@+id/textViewMissingField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:alpha="0"
-        android:text="@string/please_fill_in_all_fields"
         android:textAlignment="center"
         android:textColor="#FF0000"
         android:textSize="12sp"

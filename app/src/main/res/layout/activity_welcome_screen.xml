@@ -16,6 +16,7 @@
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textSize="34sp"
+        android:text="@string/welcome"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

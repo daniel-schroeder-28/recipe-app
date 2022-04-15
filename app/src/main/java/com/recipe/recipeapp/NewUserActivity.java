@@ -7,20 +7,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
-import java.util.Map;
 
 public class NewUserActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user);
+
+        mAuth = FirebaseAuth.getInstance();
 
         Button button = findViewById(R.id.buttonCreateAccount);
         button.setOnClickListener(this::createAccount);
@@ -43,43 +46,41 @@ public class NewUserActivity extends AppCompatActivity {
      * @param v - View
      */
     public void createAccount(View v) {
-        findViewById(R.id.textViewPasswordsDoNotMatch).setAlpha(0);
-        findViewById(R.id.textViewMissingField).setAlpha(0);
         findViewById(R.id.textViewRandomError).setAlpha(0);
-        findViewById(R.id.textViewUserAlreadyExists).setAlpha(0);
-        String user = ((EditText) findViewById(R.id.editTextUserName)).getText().toString();
         String pass = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
         String reenterPass = ((EditText) findViewById(R.id.editTextReenterPassword)).getText().toString();
+        String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
 
-        if (user.length() == 0 || pass.length() == 0 || reenterPass.length() == 0) {
-            findViewById(R.id.textViewMissingField).setAlpha(1);
+        if (pass.length() == 0 || reenterPass.length() == 0 || email.length() == 0) {
+            ((TextView) findViewById(R.id.textViewRandomError)).setText("Please enter all fields");
+            findViewById(R.id.textViewRandomError).setAlpha(1);
             return;
         } else if (!pass.equals(reenterPass)) {
-            findViewById(R.id.textViewPasswordsDoNotMatch).setAlpha(1);
+            ((TextView) findViewById(R.id.textViewRandomError)).setText("Passwords do not match");
+            findViewById(R.id.textViewRandomError).setAlpha(1);
             return;
         } else {
-            DocumentReference docRef = db.collection("users").document(user);
-            docRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        findViewById(R.id.textViewUserAlreadyExists).setAlpha(1);
+            mAuth.createUserWithEmailAndPassword(email, pass)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        DocumentReference docRef = db.collection("users").document(user.getUid());
+                        docRef.get().addOnCompleteListener(newDocTask -> {
+                            if (newDocTask.isSuccessful()) {
+                                    HashMap<String, String> fieldsMap = new HashMap<>();
+                                    fieldsMap.put("favorite_recipes", "");
+                                    docRef.set(fieldsMap).addOnSuccessListener(documentReference -> {
+                                        Intent intent = new Intent(NewUserActivity.this, WelcomeScreenActivity.class);
+                                        intent.putExtra("user", user);
+                                        startActivity(intent);
+                                    });
+                            }
+                        });
                     } else {
-                        Map<String, String> fieldsMap = new HashMap<>();
-                        fieldsMap.put("password", pass);
-                        fieldsMap.put("favorite_recipes", "");
-                        docRef.set(fieldsMap).addOnSuccessListener(documentReference -> {
-                            Intent intent = new Intent(NewUserActivity.this, WelcomeScreenActivity.class);
-                            intent.putExtra("username", user);
-                            intent.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
-                            startActivity(intent);
-                        })
-                        .addOnFailureListener(ex -> findViewById(R.id.textViewRandomError).setAlpha(1));
+                        ((TextView) findViewById(R.id.textViewRandomError)).setText(task.getException().getMessage());
+                        findViewById(R.id.textViewRandomError).setAlpha(1);
                     }
-                } else {
-                    findViewById(R.id.textViewRandomError).setAlpha(1);
-                }
-            });
+                });
         }
     }
 }

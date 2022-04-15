@@ -5,17 +5,8 @@ import android.app.Application;
 import java.util.ArrayList;
 
 public class RecipeAppGlobals extends Application {
-    private static String USERNAME = "";
     private static String LAST_SEARCH = "";
     private static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
-
-    public static String getUsername() {
-        return USERNAME;
-    }
-
-    public static void setUsername(String username) {
-        RecipeAppGlobals.USERNAME = username;
-    }
 
     public static String getLastSearch() {
         return LAST_SEARCH;
@@ -34,7 +25,11 @@ public class RecipeAppGlobals extends Application {
     }
 
     public static void addToFavoriteRecipes(String recipeName) {
-        FAVORITE_RECIPES.add(recipeName);
+        if (FAVORITE_RECIPES.contains("")) {
+            FAVORITE_RECIPES.set(FAVORITE_RECIPES.indexOf(""),recipeName);
+        } else {
+            FAVORITE_RECIPES.add(recipeName);
+        }
     }
 
     public static void removeFromFavoriteRecipes(String recipeName) {

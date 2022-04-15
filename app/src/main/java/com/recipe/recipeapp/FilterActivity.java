@@ -1,14 +1,15 @@
 package com.recipe.recipeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FilterActivity extends AppCompatActivity {
+
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,9 +17,7 @@ public class FilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filter);
 
         Intent intent = getIntent();
-        RecipeAppGlobals.setUsername(intent.getStringExtra("username"));
-        RecipeAppGlobals.setFavoriteRecipes(intent.getStringArrayListExtra("favorite_recipes"));
-        RecipeAppGlobals.setLastSearch(intent.getStringExtra("last_search"));
+        user = intent.getParcelableExtra("user");
 
         NavigationBarView navBar = findViewById(R.id.bottom_navigation);
         navBar.setSelectedItemId(R.id.filter);
@@ -34,16 +33,12 @@ public class FilterActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case (R.id.welcome):
                 Intent intentWelcome = new Intent(this, WelcomeScreenActivity.class);
-                intentWelcome.putExtra("username", RecipeAppGlobals.getUsername());
-                intentWelcome.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
-                intentWelcome.putExtra("last_search", RecipeAppGlobals.getLastSearch());
+                intentWelcome.putExtra("user",user);
                 startActivity(intentWelcome);
                 break;
             case (R.id.search):
                 Intent intentSearch = new Intent(this, SearchActivity.class);
-                intentSearch.putExtra("username", RecipeAppGlobals.getUsername());
-                intentSearch.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
-                intentSearch.putExtra("last_search", RecipeAppGlobals.getLastSearch());
+                intentSearch.putExtra("user",user);
                 startActivity(intentSearch);
                 break;
             case (R.id.filter):

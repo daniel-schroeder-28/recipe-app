@@ -24,4 +24,5 @@
     <string name="unfavorite">Unfavorite</string>
     <string name="favorite">Favorite</string>
     <string name="add_filters">Add Filters</string>
+    <string name="email">Email</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class SearchActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         Intent intent = getIntent();
-        RecipeAppGlobals.setUsername(intent.getStringExtra("username"));
-        RecipeAppGlobals.setFavoriteRecipes(intent.getStringArrayListExtra("favorite_recipes"));
-        RecipeAppGlobals.setLastSearch(intent.getStringExtra("last_search"));
+        user = intent.getParcelableExtra("user");
 
         NavigationBarView navBar = findViewById(R.id.bottom_navigation);
         navBar.setSelectedItemId(R.id.search);
@@ -59,22 +59,18 @@ public class SearchActivity extends AppCompatActivity {
      * @return true or false
      */
     public boolean navigate(MenuItem menuItem) {
-        TextView title = findViewById(R.id.textViewRecipeTitle);
+        RecipeAppGlobals.setLastSearch(((TextView) findViewById(R.id.textViewRecipeTitle)).getText().toString());
         switch (menuItem.getItemId()) {
             case (R.id.welcome):
                 Intent intentWelcome = new Intent(this, WelcomeScreenActivity.class);
-                intentWelcome.putExtra("username", RecipeAppGlobals.getUsername());
-                intentWelcome.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
-                intentWelcome.putExtra("last_search", title.getText());
+                intentWelcome.putExtra("user",user);
                 startActivity(intentWelcome);
                 break;
             case (R.id.search):
                 return false;
             case (R.id.filter):
                 Intent intentFilter = new Intent(this, FilterActivity.class);
-                intentFilter.putExtra("username", RecipeAppGlobals.getUsername());
-                intentFilter.putExtra("favorite_recipes", RecipeAppGlobals.getFavoriteRecipes());
-                intentFilter.putExtra("last_search", title.getText());
+                intentFilter.putExtra("user",user);
                 startActivity(intentFilter);
                 break;
         }
@@ -150,7 +146,7 @@ public class SearchActivity extends AppCompatActivity {
         Map<String, String> favoritesMap = new HashMap<>();
         favoritesMap.put("favorite_recipes", String.join(",", RecipeAppGlobals.getFavoriteRecipes()));
 
-        db.collection("users").document(RecipeAppGlobals.getUsername()).set(favoritesMap, SetOptions.merge());
+        db.collection("users").document(user.getUid()).set(favoritesMap, SetOptions.merge());
     }
 
     /**
@@ -166,7 +162,7 @@ public class SearchActivity extends AppCompatActivity {
         Map<String, String> favoritesMap = new HashMap<>();
         favoritesMap.put("favorite_recipes", String.join(",", RecipeAppGlobals.getFavoriteRecipes()));
 
-        db.collection("users").document(RecipeAppGlobals.getUsername()).set(favoritesMap, SetOptions.merge());
+        db.collection("users").document(user.getUid()).set(favoritesMap, SetOptions.merge());
     }
 
     /**
