@@ -146,7 +146,9 @@ public class SearchActivity extends AppCompatActivity {
         Map<String, String> favoritesMap = new HashMap<>();
         favoritesMap.put("favorite_recipes", String.join(",", RecipeAppGlobals.getFavoriteRecipes()));
 
-        db.collection("users").document(user.getUid()).set(favoritesMap, SetOptions.merge());
+        if (user != null) {
+            db.collection("users").document(user.getUid()).set(favoritesMap, SetOptions.merge());
+        }
     }
 
     /**
@@ -162,7 +164,9 @@ public class SearchActivity extends AppCompatActivity {
         Map<String, String> favoritesMap = new HashMap<>();
         favoritesMap.put("favorite_recipes", String.join(",", RecipeAppGlobals.getFavoriteRecipes()));
 
-        db.collection("users").document(user.getUid()).set(favoritesMap, SetOptions.merge());
+        if (user != null) {
+            db.collection("users").document(user.getUid()).set(favoritesMap, SetOptions.merge());
+        }
     }
 
     /**

@@ -34,24 +34,30 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
 
         recyclerView = findViewById(R.id.recyclerViewFavoriteRecipes);
 
-        DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    RecipeAppGlobals.setFavoriteRecipes(new ArrayList<>(Arrays.asList(document.getData().get("favorite_recipes").toString().split(","))));
-                    if (RecipeAppGlobals.getFavoriteRecipes().size() > 0 && !RecipeAppGlobals.getFavoriteRecipes().get(0).equals("")) {
-                        FavoritesAdapter adapter = new FavoritesAdapter(RecipeAppGlobals.getFavoriteRecipes(), this);
-                        recyclerView.setAdapter(adapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (user != null) {
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        RecipeAppGlobals.setFavoriteRecipes(new ArrayList<>(Arrays.asList(document.getData().get("favorite_recipes").toString().split(","))));
+                        if (RecipeAppGlobals.getFavoriteRecipes().size() > 0 && !RecipeAppGlobals.getFavoriteRecipes().get(0).equals("")) {
+                            FavoritesAdapter adapter = new FavoritesAdapter(RecipeAppGlobals.getFavoriteRecipes(), this);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                        }
+                    } else {
+                        RecipeAppGlobals.setFavoriteRecipes(new ArrayList<>());
                     }
                 } else {
                     RecipeAppGlobals.setFavoriteRecipes(new ArrayList<>());
                 }
-            } else {
-                RecipeAppGlobals.setFavoriteRecipes(new ArrayList<>());
-            }
-        });
+            });
+        } else {
+            FavoritesAdapter adapter = new FavoritesAdapter(RecipeAppGlobals.getFavoriteRecipes(), this);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
 
         NavigationBarView navBar = findViewById(R.id.bottom_navigation);
         navBar.setSelectedItemId(R.id.welcome);
