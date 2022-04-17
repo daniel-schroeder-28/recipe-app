@@ -25,4 +25,19 @@
     <string name="favorite">Favorite</string>
     <string name="add_filters">Add Filters</string>
     <string name="email">Email</string>
+    <string name="milk">Milk</string>
+    <string name="eggs">Eggs</string>
+    <string name="fish">Fish</string>
+    <string name="shellfish">Shellfish</string>
+    <string name="tree_nuts">Tree Nuts</string>
+    <string name="peanuts">Peanuts</string>
+    <string name="wheat">Wheat</string>
+    <string name="soy">Soy</string>
+    <string name="tomato">Tomato</string>
+    <string name="meat">Meat</string>
+    <string name="poultry">Poultry</string>
+    <string name="mushroom">Mushroom</string>
+    <string name="onion">Onion</string>
+    <string name="tofu">Tofu</string>
+    <string name="cilantro">Cilantro</string>
 </resources>

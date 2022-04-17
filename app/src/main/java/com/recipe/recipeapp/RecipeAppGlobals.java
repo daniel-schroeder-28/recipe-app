@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class RecipeAppGlobals extends Application {
     private static String LAST_SEARCH = "";
     private static ArrayList<String> FAVORITE_RECIPES = new ArrayList<>();
+    private static ArrayList<String> FILTERS = new ArrayList<>();
 
     public static String getLastSearch() {
         return LAST_SEARCH;
@@ -34,5 +35,13 @@ public class RecipeAppGlobals extends Application {
 
     public static void removeFromFavoriteRecipes(String recipeName) {
         FAVORITE_RECIPES.remove(recipeName);
+    }
+
+    public static ArrayList<String> getFilters() {
+        return FILTERS;
+    }
+
+    public static void setFilters(ArrayList<String> favoriteRecipes) {
+        FILTERS = favoriteRecipes;
     }
 }

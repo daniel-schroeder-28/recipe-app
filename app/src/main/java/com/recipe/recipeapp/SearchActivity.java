@@ -119,16 +119,28 @@ public class SearchActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if (!currentRecipe.equals(document.getId())) {
-                                allValidRecipes.add(document.getId());
+                                ArrayList<String> dbFilters = (ArrayList<String>) document.getData().get("filter_tags");
+                                boolean dontAdd = false;
+                                for (int i = 0; i < RecipeAppGlobals.getFilters().size(); i++) {
+                                    if (dbFilters.contains(RecipeAppGlobals.getFilters().get(i))) {
+                                        dontAdd = true;
+                                        break;
+                                    }
+                                }
+                                if (!dontAdd) {
+                                    allValidRecipes.add(document.getId());
+                                }
                             }
                         }
 
-                        String recipeName = allValidRecipes.get((int) Math.floor(Math.random() * allValidRecipes.size()));
-                        TextView title = findViewById(R.id.textViewRecipeTitle);
-                        title.setText(recipeName);
+                        if (allValidRecipes.size() > 0) {
+                            String recipeName = allValidRecipes.get((int) Math.floor(Math.random() * allValidRecipes.size()));
+                            TextView title = findViewById(R.id.textViewRecipeTitle);
+                            title.setText(recipeName);
 
-                        favoriteVsUnfavorite(recipeName);
-                        searchAndFillViews(recipeName);
+                            favoriteVsUnfavorite(recipeName);
+                            searchAndFillViews(recipeName);
+                        }
                     }
                 });
     }

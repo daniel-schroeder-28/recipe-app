@@ -8,11 +8,16 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
+import android.view.View;
 
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,5 +66,40 @@ public class WelcomeScreenActivityInstrumentedTest {
         onView(withId(R.id.buttonSearch)).check(matches(isDisplayed()));
         onView(withId(R.id.welcome)).perform(click());
         onView(withId(R.id.textViewWelcomeUser)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.recyclerViewFavoriteRecipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0, buttonClickViewAction.clickChildViewWithId(R.id.buttonView)));
+        onView(withId(R.id.buttonSearch)).check(matches(isDisplayed()));
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        onView(withId(R.id.welcome)).perform(click());
+        onView(withId(R.id.recyclerViewFavoriteRecipes)).check(matches(isDisplayed()));
+    }
+
+    public static class buttonClickViewAction {
+
+        public static ViewAction clickChildViewWithId(final int id) {
+            return new ViewAction() {
+                @Override
+                public Matcher<View> getConstraints() {
+                    return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Click on a child view with specified id.";
+                }
+
+                @Override
+                public void perform(UiController uiController, View view) {
+                    View v = view.findViewById(id);
+                    v.performClick();
+                }
+            };
+        }
     }
 }
