@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,7 +120,7 @@ public class SearchActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if (!currentRecipe.equals(document.getId())) {
-                                ArrayList<String> dbFilters = (ArrayList<String>) document.getData().get("filter_tags");
+                                ArrayList<String> dbFilters = new ArrayList<>(Arrays.asList(((String) document.getData().get("filter_tags")).split(",")));
                                 boolean dontAdd = false;
                                 for (int i = 0; i < RecipeAppGlobals.getFilters().size(); i++) {
                                     if (dbFilters.contains(RecipeAppGlobals.getFilters().get(i))) {

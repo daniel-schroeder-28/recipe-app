@@ -93,9 +93,8 @@ public class WelcomeScreenActivity extends AppCompatActivity implements Favorite
      */
     private void viewRecipe(int position) {
         TextView textView = recyclerView.getLayoutManager().findViewByPosition(position).findViewById(R.id.textViewRecipeName);
-
+        RecipeAppGlobals.setLastSearch(textView.getText().toString());
         Intent intentSearch = new Intent(this, SearchActivity.class);
-        intentSearch.putExtra("last_search", textView.getText());
         startActivity(intentSearch);
     }
 
