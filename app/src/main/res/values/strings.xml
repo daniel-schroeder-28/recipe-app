@@ -13,7 +13,7 @@
     <string name="already_have_an_account_click_here">Already have an account? Click here</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="please_fill_in_all_fields">Please fill in all fields</string>
-    <string name="an_error_has_occured">An error has occured</string>
+    <string name="an_error_has_occurred">An error has occurred</string>
     <string name="username_is_already_in_use">Username is already in use</string>
     <string name="filter">Filter</string>
     <string name="search">Search</string>
@@ -23,7 +23,7 @@
     <string name="view_recipe">View Recipe</string>
     <string name="unfavorite">Unfavorite</string>
     <string name="favorite">Favorite</string>
-    <string name="add_filters">Add Filters</string>
+    <string name="add_filters">Select Foods to Exclude</string>
     <string name="email">Email</string>
     <string name="milk">Milk</string>
     <string name="eggs">Eggs</string>
